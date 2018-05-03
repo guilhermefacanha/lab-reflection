@@ -35,15 +35,15 @@ public class ReflectionMethodLab {
 		}
 	}
 
-	private static String getValorCampo(Usuario usuario, String campo) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	private static String getValorCampo(Object objetoConsulta, String campo) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		String campoMetName = getCampoMethodName(campo);
-		Class classe = usuario.getClass();
+		Class classe = objetoConsulta.getClass();
 		Method[] allMethods = classe.getDeclaredMethods();
 		for(Method m : allMethods) {
 			String mname = m.getName();
 			if(mname.equals(campoMetName))
 			{
-				Object o = m.invoke(usuario);
+				Object o = m.invoke(objetoConsulta);
 				return o.toString();
 			}
 		}
@@ -56,12 +56,13 @@ public class ReflectionMethodLab {
 		return methodName;
 	}
 
-	private static boolean existeCampo(Usuario usuario, String campo) {
-		Class classe = usuario.getClass();
+	private static boolean existeCampo(Object objetoConsulta, String campo) {
+		Class classe = objetoConsulta.getClass();
 		Field[] fields = classe.getDeclaredFields();
+		System.out.println("Atributos encontrados: ");
 		for (Field field : fields) {
 			String attName = field.getName();
-			System.out.println("Atributo: " + attName);
+			System.out.println(">> " + attName);
 			if (attName.equals(campo))
 				return true;
 		}
